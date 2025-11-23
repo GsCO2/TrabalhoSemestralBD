@@ -1,0 +1,61 @@
+USE MASTER
+CREATE DATABASE TrabalhoBD
+GO
+USE TrabalhoBD
+GO 
+CREATE TABLE Usuario(
+	ID INT IDENTITY(1,1),
+	nome VARCHAR(80) NOT NULL,
+	username VARCHAR(16) NOT NULL UNIQUE,
+	email VARCHAR(60) NOT NULL UNIQUE ,
+	senha VARCHAR(12) NOT NULL,
+	dataCadastro DATE NOT NULL,
+	numCelular VARCHAR(14) NOT NULL,
+	PRIMARY KEY(ID)
+)
+GO
+CREATE TABLE Empresa(
+	ID INT IDENTITY(1, 1),
+	nome VARCHAR(80) NOT NULL,
+	pais VARCHAR(50) NOT NULL,
+	tipo VARCHAR(14) NOT NULL,
+	PRIMARY KEY(ID)
+)
+GO 
+CREATE TABLE Jogo(
+	ID INT IDENTITY(1, 1),
+	nome VARCHAR(30) NOT NULL,
+	preco DECIMAL(6,2) NOT NULL,
+	dataLancamento DATE NOT NULL,
+	idPublicadora INT NOT NULL,
+	idDesenvolvedora INT NOT NULL,
+	PRIMARY KEY(ID),
+	FOREIGN KEY(idPublicadora) REFERENCES Empresa(ID),
+	FOREIGN KEY(idDesenvolvedora) REFERENCES Empresa(ID)
+)
+GO 
+CREATE TABLE Genero(
+	ID INT IDENTITY(1, 1),
+	nome VARCHAR(30) NOT NULL UNIQUE,
+	PRIMARY KEY(ID)
+)
+GO
+CREATE TABLE Jogo_Genero(
+	idJogo INT NOT NULL,
+	idGenero INT NOT NULL,
+	PRIMARY KEY(idJogo, idGenero),
+	FOREIGN KEY (idJogo) REFERENCES Jogo(ID),
+	FOREIGN KEY (idGenero) REFERENCES Genero(ID)
+)
+GO
+CREATE TABLE Biblioteca(
+	idUsuario INT NOT NULL,
+	idJogo INT NOT NULL,
+	dataCompra DATE NOT NULL,
+	horasJogadas INT NOT NULL DEFAULT(0),
+	PRIMARY KEY(idUsuario, idJogo),
+	FOREIGN KEY(idUsuario) REFERENCES Usuario(ID),
+	FOREIGN KEY(idJogo) REFERENCES Jogo(ID)
+)
+
+
